@@ -5,6 +5,9 @@ import json as jsonlib
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import pytz
 import os
+from flask import Flask
+from threading import Thread
+
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 API_URL = "https://nepalstock.onrender.com/securityDailyTradeStat/58"
@@ -122,3 +125,15 @@ async def price(ctx, symbol: str):
 
 # --- Run the Bot ---
 bot.run(TOKEN)
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is alive!"
+
+def run():
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
+
+Thread(target=run).start()
